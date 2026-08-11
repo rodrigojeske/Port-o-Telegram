@@ -120,21 +120,9 @@
         tg.ready();
         tg.expand();
 
-        const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
-        const MEU_CHAT_ID = "1353390501";
-
         function enviarComando(cmd) {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${MEU_CHAT_ID}&text=${encodeURIComponent(cmd)}`;
-
-            fetch(url)
-                .then(res => {
-                    if (res.ok) {
-                        tg.close();
-                    } else {
-                        alert("Erro ao enviar comando para o Bot!");
-                    }
-                })
-                .catch(() => alert("Erro de conexão com o Telegram"));
+            // Envia o comando nativamente para o bot e fecha a janela do WebApp
+            tg.sendData(cmd);
         }
     </script>
 </body>
