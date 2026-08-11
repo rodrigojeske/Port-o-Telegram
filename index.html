@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Portão</title>
+    <!-- SDK Oficial do Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --accent-orange: #f39c12;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, var(--bg-color));
+            color: var(--tg-theme-text-color, var(--text-color));
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            margin: 0 0 4px 0;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        p.subtitle {
+            margin: 0 0 12px 0;
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .card {
+            background-color: var(--tg-theme-secondary-bg-color, var(--card-bg));
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 4px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        button {
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #ffffff;
+            transition: transform 0.1s ease, opacity 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.97);
+            opacity: 0.8;
+        }
+
+        .btn-green  { background-color: var(--accent-green); }
+        .btn-red    { background-color: var(--accent-red); }
+        .btn-blue   { background-color: var(--accent-blue); }
+        .btn-orange { background-color: var(--accent-orange); }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h2>🚪 Controle do Portão</h2>
+        <p class="subtitle">Selecione uma ação para enviar ao ESP32</p>
+    </div>
+
+    <!-- Seção: Comandos do Portão -->
+    <div class="card">
+        <div class="card-title">Ações do Portão</div>
+        <div class="grid-2">
+            <button class="btn-green" onclick="enviarComando('/abrir')">
+                🔓 Abrir
+            </button>
+            <button class="btn-red" onclick="enviarComando('/fechar')">
+                🔒 Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- Seção: Gerenciamento de Cadastro -->
+    <div class="card">
+        <div class="card-title">Cadastro de TAGs</div>
+        <div class="grid-2">
+            <button class="btn-orange" onclick="enviarComando('/cadastro_on')">
+                ⏱️ Ativar (30s)
+            </button>
+            <button class="btn-red" onclick="enviarComando('/cadastro_off')">
+                ❌ Cancelar
+            </button>
+        </div>
+        <div class="grid-1" style="margin-top: 10px;">
+            <button class="btn-green" onclick="enviarComando('/aprovar')">
+                ✅ Aprovar Última Negada
+            </button>
+        </div>
+    </div>
+
+    <!-- Seção: Consultas e Listagens -->
+    <div class="card">
+        <div class="card-title">Consultas</div>
+        <div class="grid-2">
+            <button class="btn-blue" onclick="enviarComando('/listar')">
+                📋 Listar TAGs
+            </button>
+            <button class="btn-blue" onclick="enviarComando('/tags')">
+                📊 Total / Status
+            </button>
+        </div>
+        <div class="grid-1" style="margin-top: 10px;">
+            <button class="btn-blue" onclick="enviarComando('/lista_nomes')">
+                🏷️ Lista de Apelidos
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa a integração com a janela do Telegram
+        const tg = window.Telegram.WebApp;
+        
+        // Expande o WebApp para ocupar a tela toda no Telegram
+        tg.expand();
+
+        function enviarComando(comando) {
+            // Envia o comando textual (/abrir, /fechar, etc) para a conversa do Bot
+            tg.sendData(comando);
+            // Fecha a janela do Mini App
+            tg.close();
+        }
+    </script>
+</body>
+</html>
