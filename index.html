@@ -155,17 +155,28 @@
     </div>
 
     <script>
-        // Inicializa a integração com a janela do Telegram
         const tg = window.Telegram.WebApp;
-        
-        // Expande o WebApp para ocupar a tela toda no Telegram
         tg.expand();
 
+        // Configurações do seu Bot e Grupo/Chat
+        const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
+        const CHAT_ID = "-1003559587090";
+
         function enviarComando(comando) {
-            // Envia o comando textual (/abrir, /fechar, etc) para a conversa do Bot
-            tg.sendData(comando);
-            // Fecha a janela do Mini App
-            tg.close();
+            // Dispara a requisição direto para o servidor do Telegram
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(comando)}`;
+
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        tg.close(); // Fecha a janela após enviar com sucesso
+                    } else {
+                        alert("Erro ao enviar comando!");
+                    }
+                })
+                .catch(err => {
+                    alert("Erro de conexão!");
+                });
         }
     </script>
 </body>
