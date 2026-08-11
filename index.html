@@ -118,10 +118,10 @@
         tg.expand();
 
         const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
-        const DESTINO_ID = "-1003559587090"; // ID do Grupo
+        const CHAT_GRUPO = "-1003559587090";
 
         function enviarComando(cmd) {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${DESTINO_ID}&text=${encodeURIComponent(cmd)}`;
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_GRUPO}&text=${encodeURIComponent(cmd)}`;
 
             fetch(url)
                 .then(res => {
