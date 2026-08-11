@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--tg-theme-bg-color, var(--bg-color));
             color: var(--tg-theme-text-color, var(--text-color));
             margin: 0;
@@ -29,18 +29,8 @@
             box-sizing: border-box;
         }
 
-        h2 {
-            margin: 0 0 4px 0;
-            font-size: 1.3rem;
-            text-align: center;
-        }
-
-        p.subtitle {
-            margin: 0 0 12px 0;
-            font-size: 0.85rem;
-            text-align: center;
-            opacity: 0.7;
-        }
+        h2 { margin: 0 0 4px 0; font-size: 1.3rem; text-align: center; }
+        p.subtitle { margin: 0 0 12px 0; font-size: 0.85rem; text-align: center; opacity: 0.7; }
 
         .card {
             background-color: var(--tg-theme-secondary-bg-color, var(--card-bg));
@@ -60,17 +50,8 @@
             padding-bottom: 4px;
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .grid-1 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-1 { display: grid; grid-template-columns: 1fr; gap: 10px; }
 
         button {
             padding: 14px 10px;
@@ -87,10 +68,7 @@
             transition: transform 0.1s ease, opacity 0.2s;
         }
 
-        button:active {
-            transform: scale(0.97);
-            opacity: 0.8;
-        }
+        button:active { transform: scale(0.97); opacity: 0.8; }
 
         .btn-green  { background-color: var(--accent-green); }
         .btn-red    { background-color: var(--accent-red); }
@@ -105,78 +83,47 @@
         <p class="subtitle">Selecione uma ação para enviar ao ESP32</p>
     </div>
 
-    <!-- Seção: Comandos do Portão -->
+    <!-- Ações do Portão -->
     <div class="card">
         <div class="card-title">Ações do Portão</div>
         <div class="grid-2">
-            <button class="btn-green" onclick="enviarComando('/abrir')">
-                🔓 Abrir
-            </button>
-            <button class="btn-red" onclick="enviarComando('/fechar')">
-                🔒 Fechar
-            </button>
+            <button class="btn-green" onclick="enviarComando('/abrir')">🔓 Abrir</button>
+            <button class="btn-red" onclick="enviarComando('/fechar')">🔒 Fechar</button>
         </div>
     </div>
 
-    <!-- Seção: Gerenciamento de Cadastro -->
+    <!-- Cadastro de TAGs -->
     <div class="card">
         <div class="card-title">Cadastro de TAGs</div>
         <div class="grid-2">
-            <button class="btn-orange" onclick="enviarComando('/cadastro_on')">
-                ⏱️ Ativar (30s)
-            </button>
-            <button class="btn-red" onclick="enviarComando('/cadastro_off')">
-                ❌ Cancelar
-            </button>
+            <button class="btn-orange" onclick="enviarComando('/cadastro_on')">⏱️ Ativar (30s)</button>
+            <button class="btn-red" onclick="enviarComando('/cadastro_off')">❌ Cancelar</button>
         </div>
         <div class="grid-1" style="margin-top: 10px;">
-            <button class="btn-green" onclick="enviarComando('/aprovar')">
-                ✅ Aprovar Última Negada
-            </button>
+            <button class="btn-green" onclick="enviarComando('/aprovar')">✅ Aprovar Última Negada</button>
         </div>
     </div>
 
-    <!-- Seção: Consultas e Listagens -->
+    <!-- Consultas -->
     <div class="card">
         <div class="card-title">Consultas</div>
         <div class="grid-2">
-            <button class="btn-blue" onclick="enviarComando('/listar')">
-                📋 Listar TAGs
-            </button>
-            <button class="btn-blue" onclick="enviarComando('/tags')">
-                📊 Total / Status
-            </button>
+            <button class="btn-blue" onclick="enviarComando('/listar')">📋 Listar TAGs</button>
+            <button class="btn-blue" onclick="enviarComando('/tags')">📊 Total / Status</button>
         </div>
         <div class="grid-1" style="margin-top: 10px;">
-            <button class="btn-blue" onclick="enviarComando('/lista_nomes')">
-                🏷️ Lista de Apelidos
-            </button>
+            <button class="btn-blue" onclick="enviarComando('/lista_nomes')">🏷️ Lista de Apelidos</button>
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
 
-        // Configurações do seu Bot e Grupo/Chat
-        const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
-        const CHAT_ID = "-1003559587090";
-
         function enviarComando(comando) {
-            // Dispara a requisição direto para o servidor do Telegram
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(comando)}`;
-
-            fetch(url)
-                .then(response => {
-                    if (response.ok) {
-                        tg.close(); // Fecha a janela após enviar com sucesso
-                    } else {
-                        alert("Erro ao enviar comando!");
-                    }
-                })
-                .catch(err => {
-                    alert("Erro de conexão!");
-                });
+            // Envia o texto como se VOCÊ tivesse digitado na conversa
+            tg.sendData(comando);
         }
     </script>
 </body>
