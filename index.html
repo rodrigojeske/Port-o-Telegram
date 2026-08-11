@@ -82,7 +82,6 @@
         <p class="subtitle">Selecione uma ação para enviar ao ESP32</p>
     </div>
 
-    <!-- Ações do Portão -->
     <div class="card">
         <div class="card-title">Ações do Portão</div>
         <div class="grid-2">
@@ -91,7 +90,6 @@
         </div>
     </div>
 
-    <!-- Cadastro de TAGs -->
     <div class="card">
         <div class="card-title">Cadastro de TAGs</div>
         <div class="grid-2">
@@ -103,7 +101,6 @@
         </div>
     </div>
 
-    <!-- Consultas -->
     <div class="card">
         <div class="card-title">Consultas</div>
         <div class="grid-2">
@@ -120,9 +117,21 @@
         tg.ready();
         tg.expand();
 
+        const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
+        const DESTINO_ID = "-1003559587090"; // ID do Grupo
+
         function enviarComando(cmd) {
-            // Envia o comando nativamente para o bot e fecha a janela do WebApp
-            tg.sendData(cmd);
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${DESTINO_ID}&text=${encodeURIComponent(cmd)}`;
+
+            fetch(url)
+                .then(res => {
+                    if (res.ok) {
+                        tg.close();
+                    } else {
+                        alert("Erro ao enviar comando");
+                    }
+                })
+                .catch(() => alert("Erro de rede"));
         }
     </script>
 </body>
