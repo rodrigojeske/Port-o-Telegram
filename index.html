@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle do Portão</title>
-    <!-- SDK Oficial do Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -121,9 +120,21 @@
         tg.ready();
         tg.expand();
 
-        function enviarComando(comando) {
-            // Envia o texto como se VOCÊ tivesse digitado na conversa
-            tg.sendData(comando);
+        const BOT_TOKEN = "8255514779:AAFmjOoRwnZcnSXRXdCCtsqopDdcOoEu_UQ";
+        const MEU_CHAT_ID = "1353390501";
+
+        function enviarComando(cmd) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${MEU_CHAT_ID}&text=${encodeURIComponent(cmd)}`;
+
+            fetch(url)
+                .then(res => {
+                    if (res.ok) {
+                        tg.close();
+                    } else {
+                        alert("Erro ao enviar comando para o Bot!");
+                    }
+                })
+                .catch(() => alert("Erro de conexão com o Telegram"));
         }
     </script>
 </body>
